@@ -32,4 +32,4 @@ def on_reset():
     game.reset()
     sio.emit("update", {"board": game.board, "winner": None, "next_player": 'X'}, broadcast=True)
     if __name__ == "__main__":
-    sio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+        sio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
