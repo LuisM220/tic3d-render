@@ -2,23 +2,32 @@
 class TicTacToe3D:
     def __init__(self):
         self.board = [[[0 for _ in range(3)] for _ in range(3)] for _ in range(3)]
-        self.current_player = -1  # -1 for X, 1 for O
+        self.current_player = -1  # -1 = X, 1 = O
         self.finished = False
         self.winner = None
         self.last_move = None
+        # Todas las direcciones posibles (incluye profundidad z)
         self.C = [
-            [1, 0, 0], [0, 1, 0], [0, 0, 1],
-            [1, 1, 0], [1, 0, 1], [0, 1, 1],
-            [1, -1, 0], [1, 0, -1], [0, 1, -1],
-            [1, 1, 1], [1, -1, 1], [1, 1, -1], [1, -1, -1]
+            [1, 0, 0], [0, 1, 0], [0, 0, 1],  # ejes x, y, z
+            [1, 1, 0], [1, 0, 1], [0, 1, 1],  # diagonales planas
+            [1, -1, 0], [1, 0, -1], [0, 1, -1],  # diagonales inversas
+            [1, 1, 1], [1, -1, 1], [1, 1, -1], [1, -1, -1]  # diagonales 3D
         ]
+
+    def reset(self):
+        """Reinicia el tablero y el estado del juego."""
+        self.board = [[[0 for _ in range(3)] for _ in range(3)] for _ in range(3)]
+        self.current_player = -1
+        self.finished = False
+        self.winner = None
+        self.last_move = None
 
     def make_move(self, x, y, z, player_symbol):
         if self.finished:
             return {"valid": False, "error": "Juego finalizado"}
 
         if (self.current_player == -1 and player_symbol != 'X') or (self.current_player == 1 and player_symbol != 'O'):
-            return {"valid": False, "error": "Turno de jugador"}
+            return {"valid": False, "error": "Turno incorrecto"}
 
         if self.board[z][y][x] != 0:
             return {"valid": False, "error": "Casilla ocupada"}
@@ -38,6 +47,7 @@ class TicTacToe3D:
                 "winning_cells": cells
             }
 
+        # Cambiar turno
         self.current_player = 1 if self.current_player == -1 else -1
         return {
             "valid": True,
@@ -52,9 +62,9 @@ class TicTacToe3D:
             win, cells = self._check_line(direction, X, Y, Z)
             if win:
                 s = sum(self.board[z][y][x] for (x, y, z) in cells)
-                if s == -3:
+                if s == -3:  # 3 X en línea
                     return -1, cells
-                if s == 3:
+                if s == 3:   # 3 O en línea
                     return 1, cells
         return None, []
 
