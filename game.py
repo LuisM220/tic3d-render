@@ -46,18 +46,21 @@ class TicTacToe3D:
         # Cambiar turno
         self.current_player = 1 if self.current_player == -1 else -1
         return {"valid": True, "board": self.board, "winner": None, "next_player": 'X' if self.current_player == -1 else 'O'}
-
-    def check_winner(self):
-        X, Y, Z = self.last_move
-        for c in range(len(self.C)):
-            direction = self.C[c]
-            win, cells = self._check_line(self.C[c], X, Y, Z)
-            if win:
-                s = sum(self.board[z][y][x] for (x, y, z) in cells)
-                if s == -3:
-                    return -1, cells
-                if s == 3:
-                    return 1, cells
+    def _check_line(self, direction, X, Y, Z):
+        dx, dy, dz = direction
+        cells = []
+        for i in range(3):
+            x = X + dx * (i - 1)
+            y = Y + dy * (i - 1)
+            z = Z + dz * (i - 1)
+            if 0 <= x < 3 and 0 <= y < 3 and 0 <= z < 3:
+                 cells.append((x, y, z))
+        else:
+            return False, []
+        if len(cells) != 3:
+        return False, []
+    return True, cells
+    
         return None, []
 
     def _check_line(self, direction, X, Y, Z):
