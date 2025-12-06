@@ -47,20 +47,19 @@ class TicTacToe3D:
         self.current_player = 1 if self.current_player == -1 else -1
         return {"valid": True, "board": self.board, "winner": None, "next_player": 'X' if self.current_player == -1 else 'O'}
     def _check_line(self, direction, X, Y, Z):
-        dx, dy, dz = direction
-        cells = []
-        for i in range(3):
-            x = X + dx * (i - 1)
-            y = Y + dy * (i - 1)
-            z = Z + dz * (i - 1)
-            if 0 <= x < 3 and 0 <= y < 3 and 0 <= z < 3:
-                 cells.append((x, y, z))
+    dx, dy, dz = direction
+    cells = []
+    for i in range(3):
+        x = X + dx * (i - 1)
+        y = Y + dy * (i - 1)
+        z = Z + dz * (i - 1)
+        if 0 <= x < 3 and 0 <= y < 3 and 0 <= z < 3:
+            cells.append((x, y, z))
         else:
             return False, []
-        if len(cells) != 3:
-              return False, []
-        return True, cells
-    
+    if len(cells) != 3:
+        return False, []
+    return True, cells
         return None, []
 
     def _check_line(self, direction, X, Y, Z):
